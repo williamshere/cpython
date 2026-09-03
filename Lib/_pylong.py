@@ -401,11 +401,13 @@ def int_from_string(s):
 
 def str_to_int(s):
     """Asymptotically fast version of decimal string to 'int' conversion."""
-    # FIXME: this doesn't support the full syntax that int() supports.
-    m = re.match(r'\s*([+-]?)([0-9_]+)\s*', s)
+    m = re.fullmatch(r'\s*([+-]?)([\d_]+)\s*', s)
     if not m:
         raise ValueError('invalid literal for int() with base 10')
-    v = int_from_string(m.group(2))
+    digits = m.group(2)
+    if digits[0] == '_' or digits[-1] == '_' or '__' in digits:
+        raise ValueError('invalid literal for int() with base 10')
+    v = int_from_string(digits)
     if m.group(1) == '-':
         v = -v
     return v
