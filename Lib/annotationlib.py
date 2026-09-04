@@ -189,6 +189,8 @@ class ForwardRef:
         if self.__extra_names__:
             locals.update(self.__extra_names__)
 
+        import ast
+
         arg = self.__forward_arg__
         if arg.isidentifier() and not keyword.iskeyword(arg):
             if arg in locals:
@@ -203,6 +205,16 @@ class ForwardRef:
                 raise NameError(_NAME_ERROR_MSG.format(name=arg), name=arg)
         else:
             code = self.__forward_code__
+
+            # Safety check against arbitrary code execution
+            try:
+                parsed = ast.parse(self.__forward_arg__, mode='eval')
+                for node in ast.walk(parsed):
+                    if isinstance(node, ast.Call):
+                        raise ValueError(f"Function calls are not allowed in type annotations: {ast.unparse(node)}")
+            except SyntaxError:
+                pass
+
             try:
                 return eval(code, globals=globals, locals=locals)
             except Exception:
