@@ -576,6 +576,28 @@ class ShlexTest(unittest.TestCase):
             list(s)
         mock_print.assert_any_call("shlex: in state ' ' I see character: 'a'")
 
+    def test_print_tokens(self):
+        lexer = shlex.shlex("a b c")
+        with patch("builtins.print") as mock_print:
+            shlex._print_tokens(lexer)
+        mock_print.assert_any_call("Token: 'a'")
+        mock_print.assert_any_call("Token: 'b'")
+        mock_print.assert_any_call("Token: 'c'")
+        self.assertEqual(mock_print.call_count, 3)
+
+        # Test empty token
+        lexer = shlex.shlex("")
+        with patch("builtins.print") as mock_print:
+            shlex._print_tokens(lexer)
+        self.assertEqual(mock_print.call_count, 0)
+
+        # Test error condition (ValueError from lexer)
+        lexer = shlex.shlex('"')
+        with patch("builtins.print") as mock_print:
+            with self.assertRaises(ValueError):
+                shlex._print_tokens(lexer)
+
+
     @cpython_only
     def test_lazy_imports(self):
         import_helper.ensure_lazy_imports('shlex', {'collections', 're', 'os'})
