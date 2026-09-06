@@ -258,6 +258,31 @@ class TestMain(unittest.TestCase):
         proc.communicate(b'"{}"')
         self.assertEqual(proc.returncode, errno.EPIPE)
 
+
+    def test_colorize_json(self):
+        from json.tool import _colorize_json
+
+        class DummyTheme(dict):
+            def __init__(self):
+                super().__init__({
+                    "definition": "<def>",
+                    "string": "<str>",
+                    "number": "<num>",
+                    "keyword": "<kw>",
+                })
+                self.reset = "<reset>"
+
+        theme = DummyTheme()
+        json_str = '{\n    "key": "value",\n    "num": 42,\n    "bool": true,\n    "null": null\n}'
+        expected = ('{\n'
+                    '    <def>"key"<reset>: <str>"value"<reset>,\n'
+                    '    <def>"num"<reset>: <num>42<reset>,\n'
+                    '    <def>"bool"<reset>: <kw>true<reset>,\n'
+                    '    <def>"null"<reset>: <kw>null<reset>\n'
+                    '}')
+
+        self.assertEqual(_colorize_json(json_str, theme), expected)
+
     @force_colorized
     def test_colors(self):
         infile = os_helper.TESTFN
