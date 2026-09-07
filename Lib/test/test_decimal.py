@@ -4154,7 +4154,7 @@ class ContextFlags:
             self.assertTrue(c.flags[FloatOperation])
 
             c.clear_flags()
-            b = 10.0 in [Decimal('10.0'), 1.0]
+            b = 10.0 in {Decimal('10.0'), 1.0}
             self.assertTrue(c.flags[FloatOperation])
 
             c.clear_flags()
