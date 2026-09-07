@@ -203,7 +203,7 @@ class TimeoutTests(unittest.IsolatedAsyncioTestCase):
                 with self.assertRaises(TimeoutError):
                     async with asyncio.timeout(0.1):
                         # Pretend we crunch some numbers.
-                        time.sleep(0.01)
+                        await asyncio.sleep(0.01)
                         await asyncio.sleep(1)
 
     async def test_nested_timeouts_loop_busy(self):
@@ -218,7 +218,7 @@ class TimeoutTests(unittest.IsolatedAsyncioTestCase):
                 with self.assertRaises(TimeoutError):
                     async with asyncio.timeout(0.01):  # (2)
                         # Pretend the loop is busy for a while.
-                        time.sleep(0.1)
+                        await asyncio.sleep(0.1)
                         await asyncio.sleep(1)
                 # TimeoutError was caught by (2)
                 await asyncio.sleep(10) # This sleep should be interrupted by (1)
