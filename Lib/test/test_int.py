@@ -799,12 +799,22 @@ class PyLongModuleTests(unittest.TestCase):
         assert -v1 == v3
         v4 = int(' +' + s + ' ')
         assert v1 == v4
+        v5 = int('١٢٣' + s)
+        assert v5 == int('123' + s)
+        v6 = int('12' + s + '_345')
+        assert v6 == int('12' + s + '345')
         with self.assertRaises(ValueError) as err:
             int(s + 'z')
         with self.assertRaises(ValueError) as err:
             int(s + '_')
         with self.assertRaises(ValueError) as err:
             int('_' + s)
+        with self.assertRaises(ValueError) as err:
+            int('1__2' + s)
+        with self.assertRaises(ValueError) as err:
+            int(s + ' abc')
+        v7 = int('1_23_45_' + s)
+        assert v7 == int('12345' + s)
 
     @support.cpython_only  # tests implementation details of CPython.
     @unittest.skipUnless(_pylong, "_pylong module required")
