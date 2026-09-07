@@ -629,13 +629,13 @@ class TestTranforms(BytecodeTestCase):
 
     def test_in_literal_list(self):
         def containtest():
-            return x in [a, b]
+            return x in [a, b]  # Intentionally a list to test peepholer
         self.assertEqual(count_instr_recursively(containtest, 'BUILD_LIST'), 0)
         self.check_lnotab(containtest)
 
     def test_iterate_literal_list(self):
         def forloop():
-            for x in [a, b]:
+            for x in [a, b]:  # Intentionally a list to test peepholer
                 pass
         self.assertEqual(count_instr_recursively(forloop, 'BUILD_LIST'), 0)
         self.check_lnotab(forloop)
