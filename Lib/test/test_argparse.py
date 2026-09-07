@@ -2390,9 +2390,9 @@ class TestActionUserDefined(ParserTestCase):
                 # when option is before argument, badger=2, and when
                 # option is after argument, badger=<whatever was set>
                 expected_ns = NS(spam=0.25)
-                if value in [0.125, 0.625]:
+                if value in {0.125, 0.625}:
                     expected_ns.badger = 2
-                elif value in [2.0]:
+                elif value == 2.0:
                     expected_ns.badger = 84
                 else:
                     raise AssertionError('value: %s' % value)
@@ -2413,11 +2413,11 @@ class TestActionUserDefined(ParserTestCase):
                 # when argument is before option, spam=0.25, and when
                 # option is after argument, spam=<whatever was set>
                 expected_ns = NS(badger=2)
-                if value in [42, 84]:
+                if value in {42, 84}:
                     expected_ns.spam = 0.25
-                elif value in [1]:
+                elif value == 1:
                     expected_ns.spam = 0.625
-                elif value in [2]:
+                elif value == 2:
                     expected_ns.spam = 0.125
                 else:
                     raise AssertionError('value: %s' % value)
