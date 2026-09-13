@@ -181,7 +181,7 @@ def config_dict(filename):
             continue
         key = key.strip()
         value = value.strip()
-        if value in ["True", "False", "None", "''", '""']:
+        if value in ("True", "False", "None", "''", '""'):
             value = eval(value)
         else:
             try:
@@ -1060,10 +1060,10 @@ class TurtleScreen(TurtleScreenBase):
         if mode is None:
             return self._mode
         mode = mode.lower()
-        if mode not in ["standard", "logo", "world"]:
+        if mode not in ("standard", "logo", "world"):
             raise TurtleGraphicsError("No turtle-graphics-mode %s" % mode)
         self._mode = mode
-        if mode in ["standard", "logo"]:
+        if mode in ("standard", "logo"):
             self._setscrollregion(-self.canvwidth//2, -self.canvheight//2,
                                        self.canvwidth//2, self.canvheight//2)
             self.xscale = self.yscale = 1.0
@@ -1616,10 +1616,10 @@ class TNavigator(object):
         """
         if mode is None:
             return self._mode
-        if mode not in ["standard", "logo", "world"]:
+        if mode not in ("standard", "logo", "world"):
             return
         self._mode = mode
-        if mode in ["standard", "world"]:
+        if mode in ("standard", "world"):
             self._angleOffset = 0
             self._angleOrient = 1
         else: # mode == "logo":
@@ -2147,7 +2147,7 @@ class TPen(object):
         if rmode is None:
             return self._resizemode
         rmode = rmode.lower()
-        if rmode in ["auto", "user", "noresize"]:
+        if rmode in ("auto", "user", "noresize"):
             self.pen(resizemode=rmode)
 
     def pensize(self, width=None):
@@ -2591,7 +2591,7 @@ class _TurtleImage(object):
             return
         if self._type == "image" == screen._shapes[shapeIndex]._type:
             return
-        if self._type in ["image", "polygon"]:
+        if self._type in ("image", "polygon"):
             screen._delete(self._item)
         elif self._type == "compound":
             for item in self._item:
@@ -3766,7 +3766,7 @@ class RawTurtle(TPen, TNavigator):
             self.clearstamp(stitem)
         elif action == "go":
             self._undogoto(data)
-        elif action in ["wri", "dot"]:
+        elif action in ("wri", "dot"):
             item = data[0]
             self.screen._delete(item)
             self.items.remove(item)
