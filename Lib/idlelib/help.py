@@ -92,7 +92,7 @@ class HelpParser(HTMLParser):
             self.chartags = 'em'
         elif tag == 'em':
             self.chartags = 'em'
-        elif tag in ['ul', 'ol']:
+        elif tag in {'ul', 'ol'}:
             if class_.find('simple') != -1:
                 s = '\n'
                 self.simplelist = True
@@ -118,7 +118,7 @@ class HelpParser(HTMLParser):
             self.hdrlink = True
         elif tag == 'h1':
             self.tags = tag
-        elif tag in ['h2', 'h3']:
+        elif tag in {'h2', 'h3'}:
             self.header = ''
             self.text.insert('end', '\n\n')
             self.tags = tag
@@ -127,21 +127,21 @@ class HelpParser(HTMLParser):
 
     def handle_endtag(self, tag):
         "Handle endtags in help.html."
-        if tag in ['h1', 'h2', 'h3']:
+        if tag in {'h1', 'h2', 'h3'}:
             assert self.level == 0
             indent = ('        ' if tag == 'h3' else
                       '    ' if tag == 'h2' else
                       '')
             self.toc.append((indent+self.header, self.text.index('insert')))
             self.tags = ''
-        elif tag in ['span', 'em']:
+        elif tag in {'span', 'em'}:
             self.chartags = ''
         elif tag == 'a':
             self.hdrlink = False
         elif tag == 'pre':
             self.pre = False
             self.tags = ''
-        elif tag in ['ul', 'dd', 'ol']:
+        elif tag in {'ul', 'dd', 'ol'}:
             self.indent(-1)
         self.prevtag = (False, tag)
 
@@ -156,7 +156,7 @@ class HelpParser(HTMLParser):
                         self.hprefix = ''
                 except ValueError:
                     self.hprefix = ''
-            if self.tags in ['h1', 'h2', 'h3']:
+            if self.tags in {'h1', 'h2', 'h3'}:
                 if (self.hprefix != '' and
                     d[0:len(self.hprefix)] == self.hprefix):
                     d = d[len(self.hprefix):]
